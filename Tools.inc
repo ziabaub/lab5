@@ -14,9 +14,9 @@ class Tools
     private $info;
 
     function __construct()
-    {
-        $this->info = array();
-    }
+{
+    $this->info = array();
+}
 
     /**
      * @param $connection
@@ -58,16 +58,26 @@ class Tools
      * @param $tableName
      * @param $fields
      * @param $values InfoCo
+     * @param $rate
      */
-    public function writeInto($connection, $tableName, $fields, $values)
-    {
-        $data = "'" . $values->__get('name')
-            . "','" . $values->__get('address')
-            . "','" . $values->__get('phone')
-            . "','" . $values->__get('email') . "'";
+    public function writeInto($connection, $tableName, $fields, $values,$rate)
+    {       $rateMe = ($rate === 'good') ? 1:0;
+            $data = "'" . $values->__get('name')
+                . "','" . $values->__get('address')
+                . "','" . $values->__get('phone')
+                . "','" . $values->__get('email') . "'";
+            $dataRating =  "'" . $values->__get('name')
+                . "','" . $rateMe . "'";
 
         $query = 'insert into' . ' ' . $tableName . ' (' . $fields . ') values (' . $data . ')';
+        $query2 = 'insert into' . ' ' . 'rating' . ' (' . 'name,'.'answer' . ') values (' . $dataRating . ')';
         $result = mysqli_query($connection, $query);
+        $this->checkRes($result,$connection);
+        $result = mysqli_query($connection, $query2);
+        $this->checkRes($result,$connection);
+    }
+
+    function checkRes ($result,$connection){
 
         if (!$result) {
 

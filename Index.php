@@ -5,6 +5,7 @@
  * Date: 2019-04-14
  * Time: 14:21
  */
+
 $host = "127.0.0.1";
 $user = "root";
 $password = "Mays0un";
@@ -13,18 +14,18 @@ $connect = mysqli_connect($host, $user, $password, $database);
 $field = 'name,address,phone,email';
 require 'Tools.inc';
 require 'tools.php';
+
 if (mysqli_connect_errno()) {
     die("Connection error -> [" . mysqli_connect_error() . "]");
 } else {
     $data = 'Connected... ' . '<br>';
     $title = "Add Your Data";
     $tool = new Tools();
-     //print_r($_POST);
     if (isset($_POST['Submit'])) {
         $info = checkSpelling($_POST, $title);
 
         if ($info != null) {
-            $tool->writeInto($connect, 'info', $field, $info);
+            $tool->writeInto($connect, 'info', $field, $info,$_POST['rating']);
             $data = "Data has been saved success";
         }
 
@@ -46,7 +47,6 @@ if (mysqli_connect_errno()) {
         $data = $tool->displayEmployeeInformation();
 
     } else if (isset($_POST["deleteFromDatabase"])) {
-        //print_r($_POST);
         $tool->deleteFrom($connect, 'info', $_POST['name']);
 
     }
@@ -80,6 +80,7 @@ if (mysqli_connect_errno()) {
     <div class="inputFields">
 
         <form action="Index.php?name=<?php echo $title ?>" method="post">
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
             <ul>
                 <li>
                     <input type="text" name="name" onfocus="this.value =''" value="Ziad Sarrih">
@@ -120,6 +121,23 @@ if (mysqli_connect_errno()) {
                     </form>
                 </li>
 
+                <li>
+                    <div>
+                        <p>How did you see my lab !!</p>
+                        Good
+                            <input type="checkbox" class="check" name="rating" value="good" checked>
+                        <br>
+                        Bad!!
+                            <input type="checkbox" class="check" name="rating" value="notBad">
+                        <script>
+                            $(document).ready(function () {
+                                $('.check').click(function () {
+                                    $('.check').not(this).prop('checked', false);
+                                });
+                            });
+                        </script>
+                    </div>
+                </li>
             </ul>
         </form>
     </div>
@@ -137,14 +155,6 @@ if (mysqli_connect_errno()) {
 
 </div>
 
-
-<?php
-//require 'Tools.inc';
-//$tool = new Tools();
-//$tool->readFrom($connect, 'info');
-//$tool->writeInto($connect,'employee','name,surname,age,salary,address',"'hadi', 'sarrih','16','350','beirut,khalda,shamseen 2'");
-//echo $tool->displayEmployeeInformation();
-?>
 </body>
 </html>
 <?php

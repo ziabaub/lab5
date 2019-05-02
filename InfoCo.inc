@@ -12,6 +12,7 @@ class InfoCo{
     private $address;
     private $phone;
     private $email;
+    private $rating;
 
 
     function __construct($name,$address,$phone,$email)
@@ -20,7 +21,6 @@ class InfoCo{
         $this->address=$address;
         $this->phone=$phone;
         $this->email=$email;
-
     }
 
 
